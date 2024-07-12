@@ -13,12 +13,12 @@ export const metadata = {
   openGraph: {
     title: 'Live MTA Train Times in NYC - Instant Subway Updates',
     type: 'website',
-    url: 'https://traintimesnyc.com/',
+    url: 'https://traintimesnyc.com',
     siteName: 'Train Times NYC',
     description:
       'Access up-to-the-minute MTA train times for New York City. Plan your commute with live subway updates directly on your phone or desktop!',
   },
-  metadataBase: new URL('https://traintimesnyc.com/'),
+  metadataBase: new URL('https://traintimesnyc.com'),
 };
 
 export default function RootLayout({
