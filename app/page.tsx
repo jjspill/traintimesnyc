@@ -11,7 +11,7 @@ export const metadata = {
   openGraph: {
     title: 'Live MTA Train Times in NYC - Instant Subway Updates',
     type: 'website',
-    url: 'https://james-spillmann.com/trains',
+    url: 'https://traintimesnyc.com/',
     siteName: 'Train Times NYC',
     description:
       'Access up-to-the-minute MTA train times for New York City. Plan your commute with live subway updates directly on your phone or desktop!',

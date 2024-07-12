@@ -567,8 +567,8 @@ export const TrainCarousel: React.FC = () => {
 export const InformationButton: React.FC = () => {
   return (
     <Link
-      href="/trains/about"
-      className="bg-black text-white font-bold rounded h-[40px] w-[40px] flex items-center justify-center ml-2"
+      href="/about"
+      className="bg-black text-white font-bold rounded-md h-[40px] w-[40px] flex items-center justify-center ml-2"
     >
       <svg
         data-slot="icon"
