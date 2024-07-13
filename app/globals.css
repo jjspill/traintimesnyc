@@ -7,14 +7,24 @@ body {
   margin: 0;
   padding: 0;
   max-width: 100%;
-  background-color:white;
-  background: none;
+  background-color: black;
+  /* Default background color for mobile */
+  /* Other background properties can be commented out or adjusted as needed */
   /* background-image: linear-gradient(to bottom, #FFCB05, #00274C); */
   /* background-attachment: fixed; */
-  /* This will make the background fixed during scroll */
 }
 
-/* Add this if you want to ensure the gradient extends to the full height even on larger screens */
+/* Media query for desktop devices */
+@media (min-width: 768px) {
+
+  /* Adjust this breakpoint as needed */
+  body {
+    background-color: gray;
+    /* Desktop background color */
+  }
+}
+
+/* This is an optional pseudo-element technique if using background gradients */
 /* body::after {
   content: '';
   position: absolute;
