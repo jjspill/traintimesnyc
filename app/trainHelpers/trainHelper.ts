@@ -123,3 +123,57 @@ const haversineDistance = (
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // Distance in miles
 };
+
+const lineFamilies: Record<string, string> = {
+  '1': '7 Avenue',
+  '2': '7 Avenue',
+  '3': '7 Avenue',
+  '4': 'Lexington Avenue',
+  '5': 'Lexington Avenue',
+  '6': 'Lexington Avenue',
+  A: '8 Avenue',
+  C: '8 Avenue',
+  E: '8 Avenue',
+  B: '6 Avenue',
+  D: '6 Avenue',
+  F: '6 Avenue',
+  M: '6 Avenue',
+  N: 'Broadway',
+  Q: 'Broadway',
+  R: 'Broadway',
+  W: 'Broadway',
+  S: 'Shuttle',
+  L: '14 Street',
+  J: 'Nassau Street',
+  Z: 'Nassau Street',
+  G: 'Crosstown',
+  '7': 'Flushing',
+};
+
+function getLineFamily(stopId: string): string {
+  const lineLetter = stopId[0];
+  return lineFamilies[lineLetter] || 'Unknown';
+}
+
+function adjustDistances(stops: Station[]): void {
+  const groupMinDistances: Record<string, number> = {};
+
+  stops.forEach((stop) => {
+    const key = `${stop.stopName}-${getLineFamily(stop.stopId)}`;
+    if (key in groupMinDistances) {
+      groupMinDistances[key] = Math.min(groupMinDistances[key], stop.distance);
+    } else {
+      groupMinDistances[key] = stop.distance;
+    }
+  });
+
+  stops.forEach((stop) => {
+    const key = `${stop.stopName}-${getLineFamily(stop.stopId)}`;
+    stop.distance = groupMinDistances[key];
+  });
+}
+
+export function sortSubwayStops(stops: Station[]): Station[] {
+  adjustDistances(stops);
+  return stops.sort((a, b) => a.distance - b.distance);
+}
