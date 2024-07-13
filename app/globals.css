@@ -7,13 +7,15 @@ body {
   margin: 0;
   padding: 0;
   max-width: 100%;
-  background-image: linear-gradient(to bottom, #FFCB05, #00274C);
-  background-attachment: fixed;
+  background-color:white;
+  background: none;
+  /* background-image: linear-gradient(to bottom, #FFCB05, #00274C); */
+  /* background-attachment: fixed; */
   /* This will make the background fixed during scroll */
 }
 
 /* Add this if you want to ensure the gradient extends to the full height even on larger screens */
-body::after {
+/* body::after {
   content: '';
   position: absolute;
   top: 0;
@@ -22,7 +24,7 @@ body::after {
   bottom: 0;
   z-index: -1;
   background: inherit;
-}
+} */
 
 @layer utilities {
   .text-balance {
