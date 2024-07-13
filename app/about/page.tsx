@@ -2,7 +2,10 @@
 'use client';
 
 import React from 'react';
-import { TrainCarousel, TrainSymbolsDisplay } from '../TrainComponents';
+import {
+  TrainCarousel,
+  TrainSymbolsDisplay,
+} from '../trainHelpers/TrainComponents';
 
 const TrainsAboutPage: React.FC = () => {
   return (

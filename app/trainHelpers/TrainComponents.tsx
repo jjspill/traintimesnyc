@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useStation } from './TrainHooks';
 import Link from 'next/link';
+import { useStation } from './TrainHooks';
 
 export interface Location {
   lat: number;

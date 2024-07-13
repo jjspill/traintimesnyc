@@ -1,6 +1,6 @@
 // pages/api/subway.ts
-import { Train } from '../TrainComponents';
-import { buildTrainData } from '../trainHelper';
+import { Train } from '../trainHelpers/TrainComponents';
+import { buildTrainData } from '../trainHelpers/trainHelper';
 import { neon } from '@neondatabase/serverless';
 
 const sql = neon(process.env.DATABASE_URL!);
