@@ -111,7 +111,7 @@ const StationDetailsComponent = ({
   }
 
   return (
-    <div className="flex flex-col text-center text-xl font-semibold font-sans bg-black text-white p-2 rounded-md">
+    <div className="flex flex-col text-center text-xl font-semibold font-sans bg-black text-white p-2 mb-2 rounded-md">
       <div className="h-[2px] w-full bg-white"></div>
       <span>{stopName} Station</span>
       <div className="flex items-center justify-center space-x-2">

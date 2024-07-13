@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import { Location, Station } from './TrainComponents';
-import { findClosestStations, fixArrivalTime } from './trainHelper';
+import {
+  findClosestStations,
+  fixArrivalTime,
+  sortSubwayStops,
+} from './trainHelper';
 
 export interface Stop {
   stopId: string;
@@ -107,7 +111,8 @@ export const useNearestStations = (
           location.lng,
           searchRadius as number,
         );
-        setNearestStations(closestStations);
+        const sortedStations = sortSubwayStops(closestStations);
+        setNearestStations(sortedStations);
       } catch (error) {
         console.error('Error finding nearest stations: ', error);
       }

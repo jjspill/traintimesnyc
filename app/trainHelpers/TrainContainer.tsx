@@ -25,9 +25,11 @@ const TrainsContainer: React.FC = () => {
     useGeolocationWithCache(setSearchRadius);
   const { nearestStations } = useNearestStations(location, searchRadius);
 
+  console.log('nearestStations', nearestStations);
+
   return (
-    <div className="flex justify-center items-start py-4 px-4">
-      <div className="min-h-[100vh] bg-[#FFEDD5] shadow-xl rounded-3xl overflow-hidden w-full max-w-4xl">
+    <div className="flex justify-center items-start md:py-4 md:px-4">
+      <div className="min-h-[100vh] md:min-h-[90vh] bg-white shadow-xl md:rounded-3xl overflow-hidden w-full max-w-4xl">
         <div className="relative flex flex-col justify-center items-center w-full min-h-20 h-fit bg-black text-center font-semibold text-white py-2 font-sans">
           <div className="min-h-[2px] w-[90%] md:w-[80%] bg-white"></div>
           <div className="flex">
