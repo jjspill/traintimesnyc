@@ -3,7 +3,8 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  TrainMenuBar,
+  TrainMenuBarMobile,
+  TrainMenuBarDesktop,
   Location,
   TrainSymbolsDisplay,
   TrainCarousel,
@@ -24,8 +25,6 @@ const TrainsContainer: React.FC = () => {
   const handleSelectedFamily = (family: string) => {
     setSelectedFamily(family);
   };
-
-  console.log('selectedFamily', selectedFamily);
 
   // hooks
   const { timer, refreshCounter } = useContinuousCountdown();
@@ -52,6 +51,10 @@ const TrainsContainer: React.FC = () => {
             <TrainSymbolsDisplay />
           </div>
         </div>
+        <TrainMenuBarDesktop
+          refreshLocation={refreshLocation}
+          setSelectedFamily={handleSelectedFamily}
+        />
         <div className="w-full p-4 py-0">
           {searchRadius === 'Demo' && (
             <div className="text-center text-gray-500 pb-4">
@@ -121,7 +124,7 @@ const TrainsContainer: React.FC = () => {
             </div>
           )}
         </div>
-        <TrainMenuBar
+        <TrainMenuBarMobile
           refreshLocation={refreshLocation}
           setSelectedFamily={handleSelectedFamily}
         />

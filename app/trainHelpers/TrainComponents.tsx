@@ -278,7 +278,26 @@ interface TrainMenuBarProps {
   setSelectedFamily: (family: string) => void;
 }
 
-export const TrainMenuBar: React.FC<TrainMenuBarProps> = ({
+export const TrainMenuBarDesktop: React.FC<TrainMenuBarProps> = ({
+  refreshLocation,
+}) => {
+  return (
+    <div className="hidden md:flex flex-col items-center w-full my-2">
+      <div className="w-fit flex justify-center items-center">
+        <button
+          className="font-semibold"
+          onClick={refreshLocation}
+          title="Refresh"
+        >
+          <RefreshSVG />
+        </button>
+        <InformationButton />
+      </div>
+    </div>
+  );
+};
+
+export const TrainMenuBarMobile: React.FC<TrainMenuBarProps> = ({
   refreshLocation,
   setSelectedFamily,
 }) => {
@@ -310,7 +329,7 @@ export const TrainMenuBar: React.FC<TrainMenuBarProps> = ({
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 w-full backdrop-filter backdrop-blur-sm transition-transform duration-300 ${
+      className={`md:hidden fixed bottom-0 left-0 right-0 w-full transition-transform duration-300 ${
         showBar ? 'translate-y-0' : 'translate-y-full'
       }`}
     >
