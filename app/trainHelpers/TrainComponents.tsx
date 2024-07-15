@@ -140,8 +140,6 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
     getLineFamily(stationIn.stopId) !== selectedFamily &&
     selectedFamily !== ''
   ) {
-    console.log('stationIn.stopId', stationIn.stopId);
-    console.log('selectedFamily', selectedFamily);
     return <></>;
   }
   if (station === undefined) {
