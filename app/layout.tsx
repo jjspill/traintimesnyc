@@ -4,7 +4,7 @@ import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Train Times NYC - Live Subway Updates',
   description:
     'Discover real-time MTA train arrival times for subway stations nearest to you.',
@@ -19,6 +19,12 @@ export const metadata = {
       'Discover real-time MTA train arrival times for subway stations nearest to you.',
   },
   metadataBase: new URL('https://traintimesnyc.com'),
+  appleWebApp: {
+    capable: true,
+    title: 'Train Times NYC',
+    statusBarStyle: 'black-translucent',
+    startupImage: [{ url: '/apple-icon.jpg' }],
+  },
 };
 
 export default function RootLayout({
