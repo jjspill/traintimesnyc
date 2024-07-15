@@ -728,7 +728,7 @@ export const AddToHomeScreen = () => {
 
     const shouldShowMessage = () => {
       let visits = Number(localStorage.getItem('visits') || 0);
-      return visits < 3;
+      return visits < 10;
     };
 
     const incrementVisits = () => {
@@ -753,7 +753,7 @@ export const AddToHomeScreen = () => {
           <div className="relative bg-gray-300 px-3 py-2.5 flex items-center justify-center text-center text-sm font-sans">
             <button
               onClick={handleClose}
-              className="absolute top-0 right-0 p-2"
+              className="absolute top-0 right-0 p-1"
               aria-label="Close"
             >
               ×
