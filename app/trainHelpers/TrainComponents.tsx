@@ -333,7 +333,7 @@ export const TrainMenuBarMobile: React.FC<TrainMenuBarProps> = ({
         showBar ? 'translate-y-0' : 'translate-y-full'
       }`}
     >
-      <div className="w-full flex justify-center items-center bg-transparent p-2">
+      <div className="w-full flex justify-center items-center bg-transparent my-2 p-2">
         <button
           className="font-semibold"
           onClick={refreshLocation}
