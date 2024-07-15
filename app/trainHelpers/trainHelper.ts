@@ -131,6 +131,8 @@ const lineFamilies: Record<string, string> = {
   '4': 'Lexington Avenue',
   '5': 'Lexington Avenue',
   '6': 'Lexington Avenue',
+  '7': 'Flushing',
+  '9': 'Shuttle',
   A: '8 Avenue',
   C: '8 Avenue',
   E: '8 Avenue',
@@ -142,15 +144,13 @@ const lineFamilies: Record<string, string> = {
   Q: 'Broadway',
   R: 'Broadway',
   W: 'Broadway',
-  S: 'Shuttle',
   L: '14 Street',
   J: 'Nassau Street',
   Z: 'Nassau Street',
   G: 'Crosstown',
-  '7': 'Flushing',
 };
 
-function getLineFamily(stopId: string): string {
+export function getLineFamily(stopId: string): string {
   const lineLetter = stopId[0];
   return lineFamilies[lineLetter] || 'Unknown';
 }
@@ -176,4 +176,12 @@ function adjustDistances(stops: Station[]): void {
 export function sortSubwayStops(stops: Station[]): Station[] {
   adjustDistances(stops);
   return stops.sort((a, b) => a.distance - b.distance);
+}
+
+export function filterStops(
+  stops: Station[],
+  selectedFamily: string,
+): Station[] {
+  if (selectedFamily === '') return stops;
+  return stops.filter((stop) => getLineFamily(stop.stopId) === selectedFamily);
 }

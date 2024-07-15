@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useStation } from './TrainHooks';
+import { getLineFamily } from './trainHelper';
 
 export interface Location {
   lat: number;
@@ -124,14 +125,25 @@ const StationDetailsComponent = ({
 interface StationProps {
   stationIn: Station;
   refreshCounter: number;
+  selectedFamily: string;
 }
 
 // async station component, fetches train data for a single station
 export const AsyncStationComponent: React.FC<StationProps> = ({
   stationIn,
   refreshCounter,
+  selectedFamily,
 }) => {
   const station = useStation(stationIn, refreshCounter);
+
+  if (
+    getLineFamily(stationIn.stopId) !== selectedFamily &&
+    selectedFamily !== ''
+  ) {
+    console.log('stationIn.stopId', stationIn.stopId);
+    console.log('selectedFamily', selectedFamily);
+    return <></>;
+  }
   if (station === undefined) {
     return (
       <div>
@@ -265,20 +277,24 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
 
 interface TrainMenuBarProps {
   refreshLocation: () => void;
+  setSelectedFamily: (family: string) => void;
 }
 
 export const TrainMenuBar: React.FC<TrainMenuBarProps> = ({
   refreshLocation,
+  setSelectedFamily,
 }) => {
   return (
-    <div className="flex flex-col items-center w-full">
-      <div className="w-fit flex justify-center items-center">
+    <div className="fixed bottom-0 left-0 right-0 w-full backdrop-filter backdrop-blur-sm">
+      <div className="w-full flex justify-center items-center bg-transparent p-2">
         <button
-          className="bg-black text-white p-2 my-2 rounded-md"
+          className="font-semibold"
           onClick={refreshLocation}
+          title="Refresh"
         >
-          Refresh Location
+          <RefreshSVG />
         </button>
+        <FilterButton onSelectFamily={setSelectedFamily} />
         <InformationButton />
       </div>
     </div>
@@ -417,6 +433,12 @@ export const SevenComponent: React.FC = () => (
   </div>
 );
 
+export const GComponent: React.FC = () => (
+  <div className="flex items-center justify-center w-8 h-8 bg-emerald-400  transition-all rounded-full">
+    <div className="text-white text-2xl">G</div>
+  </div>
+);
+
 export const UnknownTrainComponent: React.FC<{ routeId: string }> = ({
   routeId,
 }) => (
@@ -449,6 +471,7 @@ export const trainSymbolMap: { [key: string]: React.FC } = {
   L: LComponent,
   S: SComponent,
   '7': SevenComponent,
+  G: GComponent,
 };
 
 export const TrainSymbolsDisplay = ({
@@ -588,5 +611,109 @@ export const InformationButton: React.FC = () => {
         ></path>
       </svg>
     </Link>
+  );
+};
+
+const trainFamilyComponents: Record<string, React.FC[]> = {
+  '7 Avenue': [OneComponent, TwoComponent, ThreeComponent],
+  'Lexington Avenue': [FourComponent, FiveComponent, SixComponent],
+  '8 Avenue': [AComponent, CComponent, EComponent],
+  '6 Avenue': [BComponent, DComponent, FComponent, MComponent],
+  Broadway: [NComponent, QComponent, RComponent, WComponent],
+  Shuttle: [SComponent],
+  '14 Street': [LComponent],
+  'Nassau Street': [JComponent, ZComponent],
+  Crosstown: [GComponent],
+  Flushing: [SevenComponent],
+};
+
+const FilterSVG = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="white"
+      width="28"
+      height="28"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+      />
+    </svg>
+  );
+};
+
+type FilterButtonProps = {
+  onSelectFamily: (family: string) => void;
+};
+
+export const FilterButton: React.FC<FilterButtonProps> = ({
+  onSelectFamily,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedFamily, setSelectedFamily] = useState<string>('');
+
+  const handleSelectFamily = (family: string) => {
+    if (family === selectedFamily) {
+      setSelectedFamily('');
+      onSelectFamily('');
+    } else {
+      onSelectFamily(family);
+      setSelectedFamily(family);
+    }
+    setIsOpen(false);
+  };
+
+  return (
+    <div className="relative">
+      <button
+        title="Filter"
+        className="bg-black text-white font-bold rounded-md h-[40px] w-[40px] flex items-center justify-center ml-2"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <FilterSVG />
+      </button>
+      {isOpen && (
+        <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-white shadow-lg rounded-lg w-48 z-10 border-4 border-black">
+          {Object.keys(trainFamilyComponents).map((family, index, array) => (
+            <div
+              key={family}
+              className={`flex flex-wrap justify-center items-center p-2 cursor-pointer ${index < array.length - 1 ? 'border-b border-gray-300' : ''} ${family === selectedFamily ? 'bg-gray-300' : ''}`}
+              onClick={() => handleSelectFamily(family)}
+            >
+              {trainFamilyComponents[family].map((Component, idx) => (
+                <Component key={idx} />
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const RefreshSVG = () => {
+  return (
+    <div className="h-[40px] w-[40px] bg-black text-white flex items-center justify-center rounded-md">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        width="28"
+        height="28"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+        />
+      </svg>
+    </div>
   );
 };
