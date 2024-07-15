@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 import { Location, Station } from './TrainComponents';
 import {
+  filterStops,
   findClosestStations,
   fixArrivalTime,
   sortSubwayStops,
@@ -94,6 +95,7 @@ export const useGeolocationWithCache = (
 export const useNearestStations = (
   location: Location | null,
   searchRadius: string | number,
+  selectedFamily: string,
 ) => {
   const [nearestStations, setNearestStations] = useState<Station[]>([]);
 
@@ -112,6 +114,7 @@ export const useNearestStations = (
           searchRadius as number,
         );
         const sortedStations = sortSubwayStops(closestStations);
+
         setNearestStations(sortedStations);
       } catch (error) {
         console.error('Error finding nearest stations: ', error);

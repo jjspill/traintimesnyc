@@ -15,22 +15,32 @@ import {
   useGeolocationWithCache,
   useNearestStations,
 } from './TrainHooks';
+import { filterStops } from './trainHelper';
 
 const TrainsContainer: React.FC = () => {
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
+  const [selectedFamily, setSelectedFamily] = useState<string>('');
+
+  const handleSelectedFamily = (family: string) => {
+    setSelectedFamily(family);
+  };
+
+  console.log('selectedFamily', selectedFamily);
 
   // hooks
   const { timer, refreshCounter } = useContinuousCountdown();
   const { location, locationStatus, refreshLocation } =
     useGeolocationWithCache(setSearchRadius);
-  const { nearestStations } = useNearestStations(location, searchRadius);
-
-  console.log('nearestStations', nearestStations);
+  const { nearestStations } = useNearestStations(
+    location,
+    searchRadius,
+    selectedFamily,
+  );
 
   return (
     <div className="flex justify-center items-start md:py-4 md:px-4">
       <div className="min-h-[100vh] md:min-h-[90vh] bg-white shadow-xl md:rounded-3xl overflow-hidden w-full max-w-4xl">
-        <div className="relative flex flex-col justify-center items-center w-full min-h-20 h-fit bg-black text-center font-semibold text-white py-2 font-sans">
+        <div className="relative flex flex-col justify-center items-center w-full min-h-20 h-fit bg-black text-center font-semibold text-white py-2 mb-2 font-sans">
           <div className="min-h-[2px] w-[90%] md:w-[80%] bg-white"></div>
           <div className="flex">
             <div className="text-4xl px-4">Subway</div>
@@ -42,7 +52,6 @@ const TrainsContainer: React.FC = () => {
             <TrainSymbolsDisplay />
           </div>
         </div>
-        <TrainMenuBar refreshLocation={refreshLocation} />
         <div className="w-full p-4 py-0">
           {searchRadius === 'Demo' && (
             <div className="text-center text-gray-500 pb-4">
@@ -78,6 +87,7 @@ const TrainsContainer: React.FC = () => {
                     key={index}
                     stationIn={station}
                     refreshCounter={refreshCounter}
+                    selectedFamily={selectedFamily}
                   />
                 ))}
                 <div className="flex flex items-center justify-center">
@@ -111,6 +121,10 @@ const TrainsContainer: React.FC = () => {
             </div>
           )}
         </div>
+        <TrainMenuBar
+          refreshLocation={refreshLocation}
+          setSelectedFamily={handleSelectedFamily}
+        />
       </div>
     </div>
   );
