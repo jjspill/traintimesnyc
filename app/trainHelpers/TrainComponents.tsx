@@ -273,7 +273,7 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
   });
 };
 
-interface TrainMenuBarProps {
+export interface TrainMenuBarProps {
   refreshLocation: () => void;
   setSelectedFamily: (family: string) => void;
 }
@@ -291,57 +291,6 @@ export const TrainMenuBarDesktop: React.FC<TrainMenuBarProps> = ({
         >
           <RefreshSVG />
         </button>
-        <InformationButton />
-      </div>
-    </div>
-  );
-};
-
-export const TrainMenuBarMobile: React.FC<TrainMenuBarProps> = ({
-  refreshLocation,
-  setSelectedFamily,
-}) => {
-  const [showBar, setShowBar] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  const controlNavbar = () => {
-    if (typeof window !== 'undefined') {
-      if (
-        (window.scrollY > lastScrollY && window.scrollY > 100) ||
-        window.scrollY + window.innerHeight >=
-          document.documentElement.scrollHeight - 40
-      ) {
-        setShowBar(false);
-      } else {
-        setShowBar(true);
-      }
-      setLastScrollY(window.scrollY); // Update the last scroll position
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', controlNavbar);
-
-    return () => {
-      window.removeEventListener('scroll', controlNavbar);
-    };
-  }, [lastScrollY]);
-
-  return (
-    <div
-      className={`md:hidden fixed bottom-0 left-0 right-0 w-full transition-transform duration-300 ${
-        showBar ? 'translate-y-0' : 'translate-y-full'
-      }`}
-    >
-      <div className="w-full flex justify-center items-center bg-transparent my-2 p-2">
-        <button
-          className="font-semibold"
-          onClick={refreshLocation}
-          title="Refresh"
-        >
-          <RefreshSVG />
-        </button>
-        {/* <FilterButton onSelectFamily={setSelectedFamily} /> */}
         <InformationButton />
       </div>
     </div>
@@ -762,5 +711,87 @@ export const RefreshSVG = () => {
         />
       </svg>
     </div>
+  );
+};
+
+export const AddToHomeScreen = () => {
+  const [showInstallMessage, setShowInstallMessage] = useState(false);
+
+  useEffect(() => {
+    const isIos = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod/.test(userAgent);
+    };
+
+    const isInStandaloneMode = () =>
+      'standalone' in window.navigator && window.navigator.standalone;
+
+    const shouldShowMessage = () => {
+      let visits = Number(localStorage.getItem('visits') || 0);
+      return visits < 3;
+    };
+
+    const incrementVisits = () => {
+      let visits: number = Number(localStorage.getItem('visits') || 0);
+      localStorage.setItem('visits', String(visits + 1));
+    };
+
+    if (isIos() && !isInStandaloneMode() && shouldShowMessage()) {
+      setShowInstallMessage(true);
+      incrementVisits();
+    }
+  }, []);
+
+  const handleClose = () => {
+    setShowInstallMessage(false);
+  };
+
+  return (
+    <>
+      {showInstallMessage && (
+        <div className="fixed bottom-0 inset-x-0 bg-transparent">
+          <div className="relative bg-gray-300 px-3 py-2.5 flex items-center justify-center text-center text-sm font-sans">
+            <button
+              onClick={handleClose}
+              className="absolute top-0 right-0 p-2"
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <span>
+              Install this webapp on your iPhone: tap <ShareIcon /> and then Add
+              to Home Screen.
+            </span>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+const ShareIcon = () => {
+  return (
+    <svg
+      fill="#007AFF"
+      width="30"
+      height="30"
+      viewBox="0 0 50 50"
+      xmlns="http://www.w3.org/2000/svg"
+      stroke="#007AFF"
+      strokeWidth=".1"
+      style={{ verticalAlign: 'middle', display: 'inline-block' }}
+    >
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+      <g
+        id="SVGRepo_tracerCarrier"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      ></g>
+      <g id="SVGRepo_iconCarrier">
+        <path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"></path>
+        <path d="M24 7h2v21h-2z"></path>
+        <path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"></path>
+      </g>
+    </svg>
   );
 };

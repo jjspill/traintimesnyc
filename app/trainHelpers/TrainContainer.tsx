@@ -3,13 +3,13 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  TrainMenuBarMobile,
   TrainMenuBarDesktop,
   Location,
   TrainSymbolsDisplay,
   TrainCarousel,
   AsyncStationComponent,
   InformationButton,
+  AddToHomeScreen,
 } from './TrainComponents';
 import {
   useContinuousCountdown,
@@ -17,6 +17,7 @@ import {
   useNearestStations,
 } from './TrainHooks';
 import { filterStops } from './trainHelper';
+import { TrainMenuBarMobile } from './ClientComponents';
 
 const TrainsContainer: React.FC = () => {
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
@@ -128,6 +129,7 @@ const TrainsContainer: React.FC = () => {
           refreshLocation={refreshLocation}
           setSelectedFamily={handleSelectedFamily}
         />
+        <AddToHomeScreen />
       </div>
     </div>
   );
