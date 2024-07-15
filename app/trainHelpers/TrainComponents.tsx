@@ -284,8 +284,36 @@ export const TrainMenuBar: React.FC<TrainMenuBarProps> = ({
   refreshLocation,
   setSelectedFamily,
 }) => {
+  const [showBar, setShowBar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const controlNavbar = () => {
+    if (typeof window !== 'undefined') {
+      if (window.scrollY > lastScrollY && window.scrollY > 100) {
+        // Scrolling down
+        setShowBar(false);
+      } else {
+        // Scrolling up
+        setShowBar(true);
+      }
+      setLastScrollY(window.scrollY); // Update the last scroll position
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', controlNavbar);
+
+    return () => {
+      window.removeEventListener('scroll', controlNavbar);
+    };
+  }, [lastScrollY]);
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 w-full backdrop-filter backdrop-blur-sm">
+    <div
+      className={`fixed bottom-0 left-0 right-0 w-full backdrop-filter backdrop-blur-sm transition-transform duration-300 ${
+        showBar ? 'translate-y-0' : 'translate-y-full'
+      }`}
+    >
       <div className="w-full flex justify-center items-center bg-transparent p-2">
         <button
           className="font-semibold"
@@ -703,14 +731,14 @@ export const RefreshSVG = () => {
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke="currentColor"
         width="28"
         height="28"
       >
         <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
         />
       </svg>
