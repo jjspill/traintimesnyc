@@ -294,10 +294,8 @@ export const TrainMenuBar: React.FC<TrainMenuBarProps> = ({
         window.scrollY + window.innerHeight >=
           document.documentElement.scrollHeight - 40
       ) {
-        // Scrolling down
         setShowBar(false);
       } else {
-        // Scrolling up
         setShowBar(true);
       }
       setLastScrollY(window.scrollY); // Update the last scroll position
@@ -326,7 +324,7 @@ export const TrainMenuBar: React.FC<TrainMenuBarProps> = ({
         >
           <RefreshSVG />
         </button>
-        <FilterButton onSelectFamily={setSelectedFamily} />
+        {/* <FilterButton onSelectFamily={setSelectedFamily} /> */}
         <InformationButton />
       </div>
     </div>
@@ -710,7 +708,7 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
         <FilterSVG />
       </button>
       {isOpen && (
-        <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 bg-white shadow-lg rounded-lg w-48 z-10 border-4 border-black">
+        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 bg-white shadow-lg rounded-lg w-48 z-10 border-4 border-black backdrop-blur-sm">
           {Object.keys(trainFamilyComponents).map((family, index, array) => (
             <div
               key={family}
