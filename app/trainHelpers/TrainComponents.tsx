@@ -280,6 +280,25 @@ interface TrainMenuBarProps {
   setSelectedFamily: (family: string) => void;
 }
 
+function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  wait: number,
+): (...args: Parameters<T>) => void {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+
+  return function executedFunction(...args: Parameters<T>): void {
+    const later = () => {
+      timeout = null;
+      func(...args);
+    };
+
+    if (timeout !== null) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(later, wait);
+  };
+}
+
 export const TrainMenuBar: React.FC<TrainMenuBarProps> = ({
   refreshLocation,
   setSelectedFamily,
@@ -287,18 +306,14 @@ export const TrainMenuBar: React.FC<TrainMenuBarProps> = ({
   const [showBar, setShowBar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const controlNavbar = () => {
+  const controlNavbar = debounce(() => {
     if (typeof window !== 'undefined') {
-      if (window.scrollY > lastScrollY && window.scrollY > 100) {
-        // Scrolling down
-        setShowBar(false);
-      } else {
-        // Scrolling up
-        setShowBar(true);
-      }
+      // Check the scrolling up or down
+      const scrollingUp = window.scrollY < lastScrollY;
+      setShowBar(scrollingUp || window.scrollY < 100); // Show bar if scrolling up or very top of the page
       setLastScrollY(window.scrollY); // Update the last scroll position
     }
-  };
+  }, 50); // Adjust debounce time as needed
 
   useEffect(() => {
     window.addEventListener('scroll', controlNavbar);
@@ -306,7 +321,7 @@ export const TrainMenuBar: React.FC<TrainMenuBarProps> = ({
     return () => {
       window.removeEventListener('scroll', controlNavbar);
     };
-  }, [lastScrollY]);
+  }, [lastScrollY, controlNavbar]);
 
   return (
     <div
