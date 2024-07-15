@@ -1,0 +1,12 @@
+{
+  "short_name": "Train Times",
+  "name": "Train Times NYC - Live Subway Updates",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Discover real-time MTA train arrival times for subway stations nearest to you.",
+  "related_applications": [],
+  "prefer_related_applications": false
+}
