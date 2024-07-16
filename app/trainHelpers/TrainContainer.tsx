@@ -112,7 +112,10 @@ const TrainsContainer: React.FC = () => {
           {locationStatus === 'FOUND' &&
             nearestStations.length === 0 &&
             searchRadius !== 1 && (
-              <div className="flex flex items-center justify-center">
+              <div className="flex flex-col items-center justify-center">
+                <div className="text-center text-gray-500">
+                  No nearby stations found.
+                </div>
                 <button
                   type="button"
                   title="Search within 1 mile radius"
