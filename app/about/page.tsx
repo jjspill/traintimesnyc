@@ -28,12 +28,24 @@ const TrainsAboutPage: React.FC = () => {
             <h2 id="mission-title" className="text-2xl font-bold text-gray-900">
               Our Mission
             </h2>
-            <p className="mt-2">
+            <p className="mt-2 pl-0.5">
               Train Times NYC is dedicated to revolutionizing how New Yorkers
               access real-time subway information. Our platform ensures that
               millions of daily commuters and visitors can navigate the
               extensive subway network efficiently and with ease, providing live
               updates on schedules, delays, and service changes.
+            </p>
+          </section>
+
+          <section aria-labelledby="privacy-title" className="mt-6">
+            <h2 id="privacy-title" className="text-2xl font-bold text-gray-900">
+              Privacy Commitment
+            </h2>
+            <p className="mt-2 pl-0.5">
+              At Train Times NYC, your privacy is paramount. We do not track any
+              personal information, including your location. Our platform
+              operates solely to provide real-time updates and transit
+              information without any data tracking or personal profiling.
             </p>
           </section>
 
@@ -75,7 +87,7 @@ const TrainsAboutPage: React.FC = () => {
             >
               Why We Use GTFS
             </h2>
-            <p>
+            <p className="mt-2 pl-0.5">
               The General Transit Feed Specification (GTFS) is a critical
               framework that allows for the uniform representation of public
               transit data. Adopted globally, GTFS enables our service to
@@ -94,7 +106,7 @@ const TrainsAboutPage: React.FC = () => {
             >
               Our Commitment to Quality
             </h2>
-            <p>
+            <p className="mt-2 pl-0.5">
               At Train Times NYC, we are committed to the highest standards of
               data integrity. Our team works tirelessly to ensure our data is
               up-to-date and reflective of real-time MTA conditions, empowering
@@ -106,7 +118,7 @@ const TrainsAboutPage: React.FC = () => {
             <h2 id="future-title" className="text-2xl font-bold text-gray-900">
               Looking Ahead
             </h2>
-            <p>
+            <p className="mt-2 pl-0.5">
               We are continuously working to enhance our services, with plans to
               incorporate personalized trip planning tools and improved
               accessibility features to cater to all New Yorkers and visitors
@@ -139,7 +151,7 @@ const TrainsAboutPage: React.FC = () => {
             <h2 id="contact-title" className="text-2xl font-bold text-gray-900">
               Get in Touch
             </h2>
-            <p>
+            <p className="mt-2 pl-0.5">
               Interested in how Train Times NYC can improve your commute or
               looking to collaborate? Reach out to us at{' '}
               <a
