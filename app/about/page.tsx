@@ -155,10 +155,10 @@ const TrainsAboutPage: React.FC = () => {
               Interested in how Train Times NYC can improve your commute or
               looking to collaborate? Reach out to us at{' '}
               <a
-                href="jjspill@umich.edu"
+                href="mailto:traintimesnyc@gmail.com"
                 className="text-blue-600 hover:text-blue-800"
               >
-                jjspill@umich.edu
+                traintimesnyc@gmail.com
               </a>
               , or follow us on social media to stay updated with the latest
               developments.
