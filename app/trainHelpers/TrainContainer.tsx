@@ -109,21 +109,40 @@ const TrainsContainer: React.FC = () => {
                 </div>
               </>
             )}
-          {locationStatus === 'FOUND' && nearestStations.length === 0 && (
-            <div className="flex flex-col items-center justify-center">
-              <div className="text-center text-gray-500">
-                No nearby stations found.
+          {locationStatus === 'FOUND' &&
+            nearestStations.length === 0 &&
+            searchRadius !== 1 && (
+              <div className="flex flex items-center justify-center">
+                <button
+                  type="button"
+                  title="Search within 1 mile radius"
+                  onClick={() => setSearchRadius(1)}
+                  className="p-2 bg-black text-white rounded-md my-2 w-fit"
+                  style={{
+                    visibility: searchRadius === 0.5 ? 'visible' : 'hidden',
+                  }}
+                >
+                  Expand Search Radius to 1 Mile
+                </button>
               </div>
-              <button
-                type="button"
-                title="Try Demo Location"
-                onClick={() => setSearchRadius('Demo')}
-                className="p-2 m-4 bg-black text-white rounded-md my-2 w-fit"
-              >
-                Try Demo Location
-              </button>
-            </div>
-          )}
+            )}
+          {locationStatus === 'FOUND' &&
+            nearestStations.length === 0 &&
+            searchRadius === 1 && (
+              <div className="flex flex-col items-center justify-center">
+                <div className="text-center text-gray-500">
+                  No nearby stations found.
+                </div>
+                <button
+                  type="button"
+                  title="Try Demo Location"
+                  onClick={() => setSearchRadius('Demo')}
+                  className="p-2 m-4 bg-black text-white rounded-md my-2 w-fit"
+                >
+                  Try Demo Location
+                </button>
+              </div>
+            )}
         </div>
         <TrainMenuBarMobile
           refreshLocation={refreshLocation}
