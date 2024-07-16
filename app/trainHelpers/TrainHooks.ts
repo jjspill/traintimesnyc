@@ -134,7 +134,7 @@ export const useStation = (station: Station, refreshCounter: number) => {
     const fetchStop = async () => {
       if (!station || station === undefined) return;
       try {
-        const response = await fetch(`https://traintimes.nyc/api`, {
+        const response = await fetch(`https://www.traintimes.nyc/api`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ stops: [station] }),
