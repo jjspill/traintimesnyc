@@ -135,13 +135,13 @@ const TrainsAboutPage: React.FC = () => {
             </h2>
             <ul className="list-disc pl-5 mt-2">
               <li>
-                Train Times NYC has transformed how I plan my daily commute. The
-                real-time updates have saved me countless hours.
-                <em> Jack Ferber, Regular Commuter</em>
+                &quot;Train Times NYC has transformed how I plan my daily
+                commute. The real-time updates have saved me countless
+                hours.&quot; –<em> Jack Ferber, Regular Commuter</em>
               </li>
               <li>
-                Thanks to Train Times NYC, I avoided a major delay during a
-                city-wide event and made it to my meeting on time.
+                &quot;Thanks to Train Times NYC, I avoided a major delay during
+                a city-wide event and made it to my meeting on time.&quot; –
                 <em> Zad Khan, Business Professional</em>
               </li>
             </ul>
