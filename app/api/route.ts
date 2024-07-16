@@ -76,7 +76,13 @@ export async function POST(request: Request) {
     };
     const newTrainData = buildTrainData(result.data, stops);
     const stringify = JSON.stringify(newTrainData[0], null, 2);
-    return new Response(stringify);
+    return new Response(stringify, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      },
+    });
   } catch (error) {
     console.error('Error fetching data from database sources:', error);
     return new Response(
@@ -84,7 +90,13 @@ export async function POST(request: Request) {
         error: 'Failed to fetch train data',
         details: error,
       }),
-      { status: 500 },
+      {
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        },
+      },
     );
   }
 }
