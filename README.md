@@ -4,6 +4,11 @@
 
 Train Times NYC leverages user geolocation to fetch real-time train arrivals from a PostgreSQL database. See [trains_gtfs_puller](https://github.com/jjspill/trains_gtfs_puller) for more information regarding backend GTFS data processing.
 
+### Technologies
+
+- **Next.js and React.js** for frontend logic, routing and hosting.
+- **Neon Free-Tier Serverless Database** for real-time data storage and retrieval.
+
 ## File Structure
 
 ```bash
@@ -33,12 +38,14 @@ app
    - The `/api` endpoint is responsible for fetching real-time train arrival data from the Neon database. Because of Neon's free tier not having read-only database capabilities, the route uses two fetches and returns the faster response. See the backend database schema for more information.
    - Data is fetched every 15 seconds and arrival times are updated accordingly, the `useContinuousCountdown` hook is responsible for incrementing the `refreshCounter` which is included in the `useStation` dependency array.
 
-**Technologies Used:**
+## API Reference
 
-- **Next.js and React.js** for frontend logic, routing and hosting.
-- **Neon Free-Tier Serverless Database** for real-time data storage and retrieval.
+- **Get Train Arrivals:**
+    - **Endpoint:** `/api`
+    - **Method:** `POST`
+    - **Body Parameters:** `{ stops: [stations]}` where `stations` is an array of station ID's.
 
-### Setup and Installation
+## Setup and Installation
 
 1. **Environment Setup:**
    - Ensure Node.js is installed.
@@ -48,13 +55,6 @@ app
    - Use `npm run` to run the application locally.
    - Ensure environmental variables for Neon database connections are set, the `.env` file should contain the following:
 
-   ```bash
-   DATABASE_URL=
-   ```
-
-### API Reference
-
-- **Get Train Arrivals:**
-    - **Endpoint:** `/api`
-    - **Method:** `POST`
-    - **Body Parameters:** `{ stops: [stations]}` where `stations` is an array of station ID's.
+      ```bash
+      DATABASE_URL=
+      ```
