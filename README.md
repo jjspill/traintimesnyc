@@ -1,4 +1,4 @@
-# Train Times NYC Backend Architecture
+# Train Times NYC Frontend
 
 ## Overview
 
