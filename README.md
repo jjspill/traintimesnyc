@@ -6,8 +6,8 @@ Train Times NYC leverages user geolocation to fetch real-time train arrivals fro
 
 ### Technologies
 
-- **Next.js and React.js** for frontend logic, routing and hosting.
-- **Neon Free-Tier Serverless Database** for real-time data storage and retrieval.
+- **Next.js and React.js** for frontend logic, routing and hosting
+- **Neon Free-Tier Serverless Database** for real-time data storage and retrieval
 
 ## File Structure
 
@@ -43,16 +43,16 @@ app
 - **Get Train Arrivals:**
     - **Endpoint:** `/api`
     - **Method:** `POST`
-    - **Body Parameters:** `{ stops: [stations]}` where `stations` is an array of station ID's.
+    - **Body Parameters:** `{ stops: [stations]}` where `stations` is an array of station ID's
 
 ## Setup and Installation
 
 1. **Environment Setup:**
-   - Ensure Node.js is installed.
-   - Clone the repository and install dependencies using `npm install`.
+   - Ensure Node.js is installed
+   - Clone the repository and install dependencies using `npm install`
 
 2. **Running Locally:**
-   - Use `npm run` to run the application locally.
+   - Use `npm run dev` to run the application locally
    - Ensure environmental variables for Neon database connections are set, the `.env` file should contain the following:
 
       ```bash
