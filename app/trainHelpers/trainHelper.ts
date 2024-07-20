@@ -101,6 +101,10 @@ export const findClosestStations = (
     s_headsign: station.s_headsign,
     n_trains: null,
     s_trains: null,
+    coordinates: {
+      lat: station.stop_lat,
+      lng: station.stop_lon,
+    },
   }));
 };
 

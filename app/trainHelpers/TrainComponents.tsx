@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useStation } from './TrainHooks';
 import { getLineFamily } from './trainHelper';
+import { DirectionsButton } from './DirectionComponent';
 
 export interface Location {
   lat: number;
@@ -22,6 +23,7 @@ export interface Station {
   s_headsign: string;
   stopId: string;
   distance: number;
+  coordinates: Location;
   n_trains: Train[] | null;
   s_trains: Train[] | null;
 }
@@ -77,12 +79,19 @@ export const TrainsLoadingPlaceholder = () => (
 
 // conjoined station header, for desktop view when stations are grouped horizontally
 export const ConjoinedStationDetails = ({ station }: { station: Station }) => {
+  console.log(station);
   return (
     <div className="mb-2 w-full font-sans">
       <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md">
         <div className="flex flex-col justify-center items-center space-x-2">
           <div className="h-[2px] w-full bg-white"></div>
-          <span>{station.stopName} Station</span>
+          <div className="flex items-center justify-center">
+            <span>{station.stopName} Station</span>
+            {/* <DirectionsButton
+              lat={station.coordinates.lat}
+              lng={station.coordinates.lng}
+            /> */}
+          </div>
           <div className="grid grid-cols-2 gap-x-4 w-full">
             <div className="flex items-center justify-center space-x-2">
               <span>{station.n_headsign}</span>
@@ -102,10 +111,12 @@ const StationDetailsComponent = ({
   stopName,
   headsign,
   trainLength, // if 0, return nothing
+  coordinates,
 }: {
   stopName: string;
   headsign: string;
   trainLength: number | undefined;
+  coordinates: Location;
 }) => {
   if (trainLength === 0) {
     return;
@@ -114,7 +125,10 @@ const StationDetailsComponent = ({
   return (
     <div className="flex flex-col text-center text-xl font-semibold font-sans bg-black text-white p-2 mb-2 rounded-md">
       <div className="h-[2px] w-full bg-white"></div>
-      <span>{stopName} Station</span>
+      <div className="flex items-center justify-center space-x-1">
+        <span>{stopName} Station</span>
+        <DirectionsButton lat={coordinates.lat} lng={coordinates.lng} />
+      </div>
       <div className="flex items-center justify-center space-x-2">
         <span>{headsign}</span>
       </div>
@@ -150,6 +164,7 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
             stopName={stationIn.stopName}
             headsign={stationIn.n_headsign}
             trainLength={undefined}
+            coordinates={stationIn.coordinates}
           />
           <TrainsLoadingPlaceholder />
         </div>
@@ -184,6 +199,7 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
             stopName={station.stopName}
             headsign={station.n_headsign}
             trainLength={station?.n_trains?.length}
+            coordinates={station.coordinates}
           />
           {station.n_trains === null ? (
             <TrainsLoadingPlaceholder />
@@ -196,6 +212,7 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
             stopName={station.stopName}
             headsign={station.s_headsign}
             trainLength={station?.s_trains?.length}
+            coordinates={station.coordinates}
           />
           {station.s_trains === null ? (
             <TrainsLoadingPlaceholder />

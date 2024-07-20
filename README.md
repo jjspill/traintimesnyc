@@ -1,4 +1,4 @@
-# Train Times NYC Frontend
+# Train Times NYC - Frontend
 
 ## Overview
 
@@ -14,17 +14,17 @@ Train Times NYC leverages user geolocation to fetch real-time train arrivals fro
 ```bash
 app
 ├── about 
-│   └── page.tsx – About page
+│   └── page.tsx # About page
 ├── api
-│   └── route.ts – API route for fetching train arrival times given a list of stations
+│   └── route.ts # API route for fetching train arrival times given a list of stations
 ├── trainHelpers
-│   ├── ClientComponents.tsx – Components that are rendered on the client side
-│   ├── TrainContainer.tsx – Container for TrainComponents on the client side
-│   ├── TrainComponents.tsx - Components that are rendered on the server side
-│   ├── TrainHooks.ts – Custom hooks for geolocation, calculating nearest stations, and fetching train data
-│   └── trainHelper.ts – Helper functions
-│   ├── stations.json
-└── page.tsx – Main page, renders TrainContainer
+│   ├── ClientComponents.tsx # Components that are rendered on the client side
+│   ├── TrainContainer.tsx # Container for TrainComponents on the client side
+│   ├── TrainComponents.tsx # Components that are rendered on the server side
+│   ├── TrainHooks.ts # Custom hooks for geolocation, calculating nearest stations, and fetching train data
+│   └── trainHelper.ts # Helper functions
+│   ├── stations.json # List of all stations in the NYC subway system
+└── page.tsx # Main page, renders TrainContainer
 ```
 
 ## Key Components
