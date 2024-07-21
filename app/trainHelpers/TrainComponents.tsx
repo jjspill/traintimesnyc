@@ -183,7 +183,13 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
     return (
       <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md mb-2">
         <div className="h-[2px] w-full bg-white"></div>
-        <span>{stationIn.stopName}</span>
+        <div className="flex items-center justify-center space-x-1">
+          <span>{stationIn.stopName} Station</span>
+          <DirectionsButton
+            lat={station.coordinates.lat}
+            lng={station.coordinates.lng}
+          />
+        </div>
         <div className="flex items-center justify-center space-x-2">
           <span>No trains available</span>
         </div>
