@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useStation } from './TrainHooks';
 import { getLineFamily } from './trainHelper';
 import { DirectionsButton } from './DirectionComponent';
+import { TrainStatusComponent } from '../newComponents/trainAnimated';
 
 export interface Location {
   lat: number;
@@ -15,6 +16,7 @@ export interface Train {
   trip_id: string;
   stop_id: string;
   destination: string;
+  stop_name?: string;
 }
 
 export interface Station {
@@ -79,7 +81,6 @@ export const TrainsLoadingPlaceholder = () => (
 
 // conjoined station header, for desktop view when stations are grouped horizontally
 export const ConjoinedStationDetails = ({ station }: { station: Station }) => {
-  console.log(station);
   return (
     <div className="mb-2 w-full font-sans">
       <div className="flex flex-col text-center text-xl font-semibold bg-black text-white p-2 rounded-md">
@@ -210,7 +211,7 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
           {station.n_trains === null ? (
             <TrainsLoadingPlaceholder />
           ) : (
-            <TrainComponent trains={station.n_trains} />
+            <TrainStatusComponent trains={station.n_trains} />
           )}
         </div>
         <div>
@@ -223,7 +224,7 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
           {station.s_trains === null ? (
             <TrainsLoadingPlaceholder />
           ) : (
-            <TrainComponent trains={station.s_trains} />
+            <TrainStatusComponent trains={station.s_trains} />
           )}
         </div>
       </div>
@@ -234,14 +235,14 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
             {station.n_trains === null ? (
               <TrainsLoadingPlaceholder />
             ) : (
-              <TrainComponent trains={station.n_trains} />
+              <TrainStatusComponent trains={station.n_trains} />
             )}
           </div>
           <div>
             {station.s_trains === null ? (
               <TrainsLoadingPlaceholder />
             ) : (
-              <TrainComponent trains={station.s_trains} />
+              <TrainStatusComponent trains={station.s_trains} />
             )}
           </div>
         </div>
@@ -250,7 +251,7 @@ export const AsyncStationComponent: React.FC<StationProps> = ({
   );
 };
 
-interface TrainComponentProps {
+export interface TrainComponentProps {
   trains: Train[];
   // trainSymbolMap: { [key: string]: React.FC };
 }
@@ -264,7 +265,9 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
     return (
       <div
         key={index}
-        className={`flex justify-between items-center ${!isLastTrain && 'border-b border-black'} ${isLastTrain && 'pb-4'} py-2`}
+        className={`flex justify-between items-center ${
+          !isLastTrain && 'border-b border-black'
+        } ${isLastTrain && 'pb-4'} py-2`}
       >
         <div className="flex items-center pl-1">
           {TrainComponent && (
@@ -283,9 +286,9 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
               train.arrival_time === 'arriving'
                 ? 'text-black' // Deeper red with white text
                 : train.arrival_time.includes('minute') &&
-                    parseInt(train.arrival_time.split(' ')[0], 10) < 5
-                  ? 'text-black' // Changed to a darker orange for visibility
-                  : 'text-black' // A dark teal for general cases
+                  parseInt(train.arrival_time.split(' ')[0], 10) < 5
+                ? 'text-black' // Changed to a darker orange for visibility
+                : 'text-black' // A dark teal for general cases
             } py-1 px-3 rounded-full text-sm`}
           >
             {train.arrival_time}
@@ -540,7 +543,7 @@ export const TrainCarousel: React.FC = () => {
     const saveCarouselState = () => {
       if (carouselRef.current) {
         const transformMatrix = window.getComputedStyle(
-          carouselRef.current,
+          carouselRef.current
         ).transform;
         const matrixValues = transformMatrix.match(/matrix.*\((.+)\)/);
         const xPosition = matrixValues
@@ -701,7 +704,9 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
           {Object.keys(trainFamilyComponents).map((family, index, array) => (
             <div
               key={family}
-              className={`flex flex-wrap justify-center items-center p-2 cursor-pointer ${index < array.length - 1 ? 'border-b border-gray-300' : ''} ${family === selectedFamily ? 'bg-gray-300' : ''}`}
+              className={`flex flex-wrap justify-center items-center p-2 cursor-pointer ${
+                index < array.length - 1 ? 'border-b border-gray-300' : ''
+              } ${family === selectedFamily ? 'bg-gray-300' : ''}`}
               onClick={() => handleSelectFamily(family)}
             >
               {trainFamilyComponents[family].map((Component, idx) => (

@@ -1,0 +1,42 @@
+.train-button {
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    display: block;
+}
+
+.train-detail {
+    transition: max-height 300ms ease-in-out, padding 300ms ease-in-out;
+    overflow: hidden;
+    max-height: 50px;
+    /* default closed state height */
+}
+
+.train-detail.open {
+    max-height: 200px;
+    /* adjusted for content size when open */
+    padding-bottom: 200px;
+}
+
+.pulse-animation {
+    animation: pulse 0.5s ease-out;
+}
+
+@keyframes pulse {
+    0% {
+        background-color: rgba(200, 200, 200, 0.5);
+    }
+
+    50% {
+        background-color: rgba(200, 200, 200, 0.8);
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}

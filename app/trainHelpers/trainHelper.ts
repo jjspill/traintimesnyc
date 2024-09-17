@@ -2,7 +2,38 @@ import { Station, Train } from './TrainComponents';
 import { parseISO, differenceInSeconds } from 'date-fns';
 import stations from './stations.json';
 
-function processTrains(trains: Train[] | null) {
+export function fixTime(trains: any) {
+  if (!trains) return [];
+  const currentZonedTime = new Date();
+  return trains
+    .map((train: any) => {
+      const arrivalTimeZoned = parseISO(train.arrival_time); // Already in Eastern Time
+      const timeDiffInSeconds = differenceInSeconds(
+        arrivalTimeZoned,
+        currentZonedTime
+      );
+      return {
+        ...train,
+        timeDiffInSeconds,
+      };
+    })
+    .filter((train: any) => train.timeDiffInSeconds >= -30)
+    .sort((a: any, b: any) => a.timeDiffInSeconds - b.timeDiffInSeconds) // Sort based on timeDiffInSeconds
+    .map((train: any) => {
+      const minutes = Math.floor(train.timeDiffInSeconds / 60);
+      if (minutes <= 0) {
+        train.arrival_time = 'arriving';
+      } else {
+        train.arrival_time = `${minutes} ${
+          minutes === 1 ? 'minute' : 'minutes'
+        }`;
+      }
+      // console.log('train', train);
+      return train;
+    });
+}
+
+export function processTrains(trains: Train[] | null) {
   if (!trains) return [];
   const currentZonedTime = new Date();
 
@@ -11,7 +42,7 @@ function processTrains(trains: Train[] | null) {
       const arrivalTimeZoned = parseISO(train.arrival_time); // Already in Eastern Time
       const timeDiffInSeconds = differenceInSeconds(
         arrivalTimeZoned,
-        currentZonedTime,
+        currentZonedTime
       );
       return {
         ...train,
@@ -25,8 +56,11 @@ function processTrains(trains: Train[] | null) {
       if (minutes <= 0) {
         train.arrival_time = 'arriving';
       } else {
-        train.arrival_time = `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`;
+        train.arrival_time = `${minutes} ${
+          minutes === 1 ? 'minute' : 'minutes'
+        }`;
       }
+      // console.log('train', train);
       return train;
     });
 }
@@ -54,12 +88,12 @@ export function buildTrainData(trains: Train[], stations: Station[]) {
   const newTrainData = stations?.map((station) => {
     let northStationTrains = trains?.filter(
       (train) =>
-        train.stop_id === station.stopId && getDirection(train.trip_id) === 'N',
+        train.stop_id === station.stopId && getDirection(train.trip_id) === 'N'
     );
 
     let southStationTrains = trains?.filter(
       (train) =>
-        train.stop_id === station.stopId && getDirection(train.trip_id) === 'S',
+        train.stop_id === station.stopId && getDirection(train.trip_id) === 'S'
     );
 
     if (station.n_headsign === '') northStationTrains = [];
@@ -78,7 +112,7 @@ export function buildTrainData(trains: Train[], stations: Station[]) {
 export const findClosestStations = (
   lat: number,
   lng: number,
-  maxDistance: number = 0.5, // Default max distance in miles
+  maxDistance: number = 0.5 // Default max distance in miles
 ): Station[] => {
   const filteredStops = stations
     .map((station: any) => {
@@ -86,7 +120,7 @@ export const findClosestStations = (
         lat,
         lng,
         parseFloat(station.stop_lat),
-        parseFloat(station.stop_lon),
+        parseFloat(station.stop_lon)
       );
       return { ...station, distance };
     })
@@ -112,7 +146,7 @@ const haversineDistance = (
   lat1: number,
   lon1: number,
   lat2: number,
-  lon2: number,
+  lon2: number
 ): number => {
   const toRadians = (degrees: number): number => degrees * (Math.PI / 180);
   const R = 3959; // Radius of the Earth in miles
@@ -184,7 +218,7 @@ export function sortSubwayStops(stops: Station[]): Station[] {
 
 export function filterStops(
   stops: Station[],
-  selectedFamily: string,
+  selectedFamily: string
 ): Station[] {
   if (selectedFamily === '') return stops;
   return stops.filter((stop) => getLineFamily(stop.stopId) === selectedFamily);

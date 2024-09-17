@@ -5,8 +5,11 @@ import {
   filterStops,
   findClosestStations,
   fixArrivalTime,
+  fixTime,
+  processTrains,
   sortSubwayStops,
 } from './trainHelper';
+import { FutureStop } from '../newComponents/futureStations';
 
 export interface Stop {
   stopId: string;
@@ -41,7 +44,7 @@ function saveLocation(location: any) {
 }
 
 export const useGeolocationWithCache = (
-  setSearchRadius: React.Dispatch<React.SetStateAction<number | string>>,
+  setSearchRadius: React.Dispatch<React.SetStateAction<number | string>>
 ) => {
   const [location, setLocation] = useState<Location | null>(null);
   const [status, setStatus] = useState('ACQUIRING');
@@ -73,7 +76,7 @@ export const useGeolocationWithCache = (
         (error) => {
           console.error('Geolocation error:', error);
           setStatus('NOT_FOUND');
-        },
+        }
       );
     } else {
       console.error('Geolocation is not available.');
@@ -95,7 +98,7 @@ export const useGeolocationWithCache = (
 export const useNearestStations = (
   location: Location | null,
   searchRadius: string | number,
-  selectedFamily: string,
+  selectedFamily: string
 ) => {
   const [nearestStations, setNearestStations] = useState<Station[]>([]);
 
@@ -111,7 +114,7 @@ export const useNearestStations = (
         const closestStations = findClosestStations(
           location.lat,
           location.lng,
-          searchRadius as number,
+          searchRadius as number
         );
         const sortedStations = sortSubwayStops(closestStations);
 
@@ -181,4 +184,33 @@ export const useContinuousCountdown = () => {
   }, []);
 
   return { timer, refreshCounter };
+};
+
+export const useFutureStops = (routeId: string) => {
+  const [futureStops, setFutureStops] = useState<FutureStop[]>([]);
+
+  useEffect(() => {
+    const fetchFutureStops = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/futureStops`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ routeId }),
+          next: {
+            revalidate: 15,
+          },
+        });
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        const fixedData = fixTime(data);
+        setFutureStops(fixedData);
+      } catch (error) {
+        console.error('Failed to fetch future stops:', error);
+      }
+    };
+
+    fetchFutureStops();
+  }, [routeId]);
+
+  return futureStops;
 };

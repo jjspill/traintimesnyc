@@ -18,6 +18,7 @@ import {
 } from './TrainHooks';
 import { filterStops } from './trainHelper';
 import { TrainMenuBarMobile } from './ClientComponents';
+import FutureStations from '../newComponents/futureStations';
 
 const TrainsContainer: React.FC = () => {
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
@@ -34,10 +35,8 @@ const TrainsContainer: React.FC = () => {
   const { nearestStations } = useNearestStations(
     location,
     searchRadius,
-    selectedFamily,
+    selectedFamily
   );
-
-  console.log('nearestStations', nearestStations);
 
   return (
     <div className="flex justify-center items-start md:py-4 md:px-4">
@@ -49,9 +48,6 @@ const TrainsContainer: React.FC = () => {
           </div>
           <div className="block md:hidden">
             <TrainCarousel />
-          </div>
-          <div className="hidden md:block">
-            <TrainSymbolsDisplay />
           </div>
         </div>
         <TrainMenuBarDesktop
