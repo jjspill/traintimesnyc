@@ -192,7 +192,7 @@ export const useFutureStops = (routeId: string) => {
   useEffect(() => {
     const fetchFutureStops = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/futureStops`, {
+        const response = await fetch(`http://traintimes.nyc/api/futureStops`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ routeId }),
