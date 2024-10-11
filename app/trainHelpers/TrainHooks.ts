@@ -137,7 +137,7 @@ export const useStation = (station: Station, refreshCounter: number) => {
     const fetchStop = async () => {
       if (!station || station === undefined) return;
       try {
-        const response = await fetch(`https://www.traintimes.nyc/api`, {
+        const response = await fetch(`/api`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ stops: [station] }),
@@ -192,7 +192,7 @@ export const useFutureStops = (routeId: string) => {
   useEffect(() => {
     const fetchFutureStops = async () => {
       try {
-        const response = await fetch(`http://traintimes.nyc/api/futureStops`, {
+        const response = await fetch(`/api/futureStops`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ routeId }),
@@ -203,6 +203,7 @@ export const useFutureStops = (routeId: string) => {
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         const fixedData = fixTime(data);
+        console.log('fixedData', fixedData);
         setFutureStops(fixedData);
       } catch (error) {
         console.error('Failed to fetch future stops:', error);

@@ -19,6 +19,8 @@ export const TrainStatusComponent: React.FC<TrainComponentProps> = ({
     trainRefs.current = trainRefs.current.slice(0, trains.length);
   }, [trains]);
 
+  const stop_id = trains[0]?.stop_id;
+
   // Toggle function for each train
   const toggleOpened = (index: number) => {
     const newOpenStates = [...openStates];
@@ -73,7 +75,9 @@ export const TrainStatusComponent: React.FC<TrainComponentProps> = ({
               </span>
             </div>
           </div>
-          {isOpen && <FutureStations trip_id={train.trip_id} />}
+          {isOpen && (
+            <FutureStations trip_id={train.trip_id} stop_id={stop_id} />
+          )}
         </div>
       </button>
     );
