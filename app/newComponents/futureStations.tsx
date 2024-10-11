@@ -30,14 +30,17 @@ export const FutureStations: React.FC<FutureStationsProps> = ({
 }) => {
   const stops = useFutureStops(trip_id);
   const currentStopIndex = stops.findIndex((stop) => stop.stop_id === stop_id);
-  const stopsToShow = stops.slice(currentStopIndex + 1);
+  // console.log('currentStopIndex', currentStopIndex);
+  console.log('stop id', stop_id);
+  // console.log('current stop index', currentStopIndex);
+  // const stopsToShow = stops.slice(currentStopIndex + 1);
 
   return (
     <div className="relative w-full h-full">
       {/* <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 h-0.5 bg-gray-400 z-0"></div> */}
       <div className="flex w-full h-full overflow-x-auto pl-10 pt-3 space-x-10">
-        {stopsToShow.length > 0 ? (
-          stopsToShow.map((stop, index) => (
+        {stops.length > 0 ? (
+          stops.map((stop, index) => (
             <FutureStationStop
               stop={stop}
               index={index}
@@ -63,6 +66,9 @@ const FutureStationStop: React.FC<{
   //   hour: '2-digit',
   //   minute: '2-digit',
   // });
+
+  // console.log('stop', stop);
+  // console.log('stopName', stopName);
 
   return (
     <div className="flex flex-col min-w-[100px] w-full items-center">

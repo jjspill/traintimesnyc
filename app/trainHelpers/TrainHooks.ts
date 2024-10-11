@@ -202,6 +202,7 @@ export const useFutureStops = (routeId: string) => {
         });
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
+        console.log('data', data);
         const fixedData = fixTime(data);
         console.log('fixedData', fixedData);
         setFutureStops(fixedData);

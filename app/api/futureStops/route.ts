@@ -27,6 +27,7 @@ async function retry<T>(
 export async function POST(request: Request) {
   const body = await request.json();
   const { routeId } = body;
+  console.log('routeId', routeId);
 
   const TIMEOUT_MS = 500; // Maximum delay for primary before checking secondary
   const RETRY_TIMES = 3;
@@ -75,7 +76,7 @@ export async function POST(request: Request) {
       source: string;
       data: Train[];
     };
-    console.log('result');
+    console.log('result', result.data.length);
     // const newTrainData = buildTrainData(result.data, stops);
     const stringify = JSON.stringify(result.data, null, 2);
     return new Response(stringify, {
