@@ -41,7 +41,7 @@ function saveLocation(location: any) {
 }
 
 export const useGeolocationWithCache = (
-  setSearchRadius: React.Dispatch<React.SetStateAction<number | string>>,
+  setSearchRadius: React.Dispatch<React.SetStateAction<number | string>>
 ) => {
   const [location, setLocation] = useState<Location | null>(null);
   const [status, setStatus] = useState('ACQUIRING');
@@ -73,7 +73,7 @@ export const useGeolocationWithCache = (
         (error) => {
           console.error('Geolocation error:', error);
           setStatus('NOT_FOUND');
-        },
+        }
       );
     } else {
       console.error('Geolocation is not available.');
@@ -95,7 +95,7 @@ export const useGeolocationWithCache = (
 export const useNearestStations = (
   location: Location | null,
   searchRadius: string | number,
-  selectedFamily: string,
+  selectedFamily: string
 ) => {
   const [nearestStations, setNearestStations] = useState<Station[]>([]);
 
@@ -111,7 +111,7 @@ export const useNearestStations = (
         const closestStations = findClosestStations(
           location.lat,
           location.lng,
-          searchRadius as number,
+          searchRadius as number
         );
         const sortedStations = sortSubwayStops(closestStations);
 
@@ -124,7 +124,7 @@ export const useNearestStations = (
     findNearestStations();
   }, [location, searchRadius]);
 
-  return { nearestStations };
+  return { nearestStations, setNearestStations };
 };
 
 export const useStation = (station: Station, refreshCounter: number) => {

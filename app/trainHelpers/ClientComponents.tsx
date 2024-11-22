@@ -6,10 +6,12 @@ import {
   RefreshSVG,
   TrainMenuBarProps,
 } from './TrainComponents';
+import { SearchButton } from '../searchBar/searchButton';
 
 export const TrainMenuBarMobile: React.FC<TrainMenuBarProps> = ({
   refreshLocation,
   setSelectedFamily,
+  setSearchBarStatus,
 }) => {
   const [showBar, setShowBar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -20,8 +22,7 @@ export const TrainMenuBarMobile: React.FC<TrainMenuBarProps> = ({
     if (typeof window !== 'undefined') {
       setIsClient(true);
       setIsStandalone(
-        'standalone' in window.navigator &&
-          window.navigator.standalone === true,
+        'standalone' in window.navigator && window.navigator.standalone === true
       );
     }
   }, []);
@@ -61,9 +62,9 @@ export const TrainMenuBarMobile: React.FC<TrainMenuBarProps> = ({
       }`}
     >
       <div
-        className={`w-full flex justify-center items-center bg-transparent ${
+        className={`w-full flex justify-center items-center bg-transparent space-x-2 pb-2 ${
           isStandalone ? 'my-4' : 'my-1'
-        } p-2`}
+        }`}
       >
         <button
           className="font-semibold"
@@ -72,6 +73,7 @@ export const TrainMenuBarMobile: React.FC<TrainMenuBarProps> = ({
         >
           <RefreshSVG />
         </button>
+        <SearchButton onClick={setSearchBarStatus!} />
         {/* <FilterButton onSelectFamily={setSelectedFamily} /> */}
         <InformationButton />
       </div>
