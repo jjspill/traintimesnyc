@@ -127,6 +127,8 @@ export const findClosestStations = (
     .filter((station: any) => station.distance <= maxDistance)
     .sort((a: any, b: any) => a.distance - b.distance);
 
+  console.log('filteredStops', filteredStops);
+
   return filteredStops.map((station: any) => ({
     stopId: station.stop_id,
     stopName: station.stop_name,
@@ -142,12 +144,21 @@ export const findClosestStations = (
   }));
 };
 
-const haversineDistance = (
+export const haversineDistance = (
   lat1: number,
   lon1: number,
   lat2: number,
   lon2: number
 ): number => {
+  if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
+    console.error('One of the coordinates is not a number:', {
+      lat1,
+      lon1,
+      lat2,
+      lon2,
+    });
+  }
+
   const toRadians = (degrees: number): number => degrees * (Math.PI / 180);
   const R = 3959; // Radius of the Earth in miles
   const dLat = toRadians(lat2 - lat1);

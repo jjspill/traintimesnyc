@@ -302,6 +302,7 @@ export const TrainComponent: React.FC<TrainComponentProps> = ({ trains }) => {
 export interface TrainMenuBarProps {
   refreshLocation: () => void;
   setSelectedFamily: (family: string) => void;
+  setSearchBarStatus: () => void;
 }
 
 export const TrainMenuBarDesktop: React.FC<TrainMenuBarProps> = ({
@@ -613,7 +614,7 @@ export const InformationButton: React.FC = () => {
   return (
     <Link
       href="/about"
-      className="bg-black text-white font-bold rounded-md h-[40px] w-[40px] flex items-center justify-center ml-2"
+      className="bg-black text-white font-bold rounded-md h-[40px] w-[40px] flex items-center justify-center"
     >
       <svg
         data-slot="icon"

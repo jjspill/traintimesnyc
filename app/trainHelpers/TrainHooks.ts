@@ -46,6 +46,9 @@ function saveLocation(location: any) {
 export const useGeolocationWithCache = (
   setSearchRadius: React.Dispatch<React.SetStateAction<number | string>>
 ) => {
+  const [currentGeoLocation, setCurrentGeoLocation] = useState<Location | null>(
+    null
+  );
   const [location, setLocation] = useState<Location | null>(null);
   const [status, setStatus] = useState('ACQUIRING');
 
@@ -71,6 +74,7 @@ export const useGeolocationWithCache = (
           };
           saveLocation(newLocation);
           setLocation(newLocation);
+          setCurrentGeoLocation(newLocation);
           setStatus('FOUND');
         },
         (error) => {
@@ -90,6 +94,8 @@ export const useGeolocationWithCache = (
 
   return {
     location,
+    currentGeoLocation,
+    setLocation,
     locationStatus: status,
     refreshLocation: () => getLocation(true),
   };
@@ -109,15 +115,23 @@ export const useNearestStations = (
 
   useEffect(() => {
     const findNearestStations = async () => {
-      if (!location || !searchRadius) return;
+      console.log('finding nearest stations');
+      if (!location || !searchRadius) {
+        console.log('location', location);
+        console.log('search radius', searchRadius);
+        console.error('Location or search radius is missing');
+        return;
+      }
       try {
         const closestStations = findClosestStations(
           location.lat,
           location.lng,
           searchRadius as number
         );
+        console.log('closest stations', closestStations);
         const sortedStations = sortSubwayStops(closestStations);
 
+        console.log('sorted stations', sortedStations);
         setNearestStations(sortedStations);
       } catch (error) {
         console.error('Error finding nearest stations: ', error);
@@ -127,7 +141,7 @@ export const useNearestStations = (
     findNearestStations();
   }, [location, searchRadius]);
 
-  return { nearestStations };
+  return { nearestStations, setNearestStations };
 };
 
 export const useStation = (station: Station, refreshCounter: number) => {

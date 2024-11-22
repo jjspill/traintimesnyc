@@ -19,10 +19,13 @@ import {
 import { filterStops } from './trainHelper';
 import { TrainMenuBarMobile } from './ClientComponents';
 import FutureStations from '../newComponents/futureStations';
+import StationSearch from '../newComponents/searchBar/SearchBar';
 
 const TrainsContainer: React.FC = () => {
   const [searchRadius, setSearchRadius] = useState<string | number>(0.5);
   const [selectedFamily, setSelectedFamily] = useState<string>('');
+  const [searchBarOpen, setSearchBarOpen] = useState<boolean>(false);
+  const [searchLocation, setSearchLocation] = useState<Location | null>(null);
 
   const handleSelectedFamily = (family: string) => {
     setSelectedFamily(family);
@@ -30,14 +33,28 @@ const TrainsContainer: React.FC = () => {
 
   // hooks
   const { timer, refreshCounter } = useContinuousCountdown();
-  const { location, locationStatus, refreshLocation } =
-    useGeolocationWithCache(setSearchRadius);
-  const { nearestStations } = useNearestStations(
+  const {
     location,
+    currentGeoLocation,
+    setLocation,
+    locationStatus,
+    refreshLocation,
+  } = useGeolocationWithCache(setSearchRadius);
+
+  const handleSearchBarStatus = () => {
+    setSearchBarOpen(!searchBarOpen);
+  };
+
+  const useLocation =
+    searchLocation && searchBarOpen ? searchLocation : location;
+
+  const { nearestStations, setNearestStations } = useNearestStations(
+    useLocation,
     searchRadius,
     selectedFamily
   );
 
+  console.log('search location', searchLocation);
   return (
     <div className="flex justify-center items-start md:py-4 md:px-4">
       <div className="min-h-[100vh] md:min-h-[90vh] bg-white shadow-xl md:rounded-3xl overflow-hidden w-full max-w-4xl">
@@ -53,7 +70,16 @@ const TrainsContainer: React.FC = () => {
         <TrainMenuBarDesktop
           refreshLocation={refreshLocation}
           setSelectedFamily={handleSelectedFamily}
+          setSearchBarStatus={handleSearchBarStatus}
         />
+        {location && currentGeoLocation && searchBarOpen && (
+          <StationSearch
+            currentLocation={location}
+            searchBarOpen={searchBarOpen}
+            setNearestStations={setNearestStations}
+            setSearchLocation={setSearchLocation}
+          />
+        )}
         <div className="w-full p-4 py-0">
           {searchRadius === 'Demo' && (
             <div className="text-center text-gray-500 pb-4">
@@ -148,6 +174,7 @@ const TrainsContainer: React.FC = () => {
         <TrainMenuBarMobile
           refreshLocation={refreshLocation}
           setSelectedFamily={handleSelectedFamily}
+          setSearchBarStatus={handleSearchBarStatus}
         />
         <AddToHomeScreen />
       </div>
