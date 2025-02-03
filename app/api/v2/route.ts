@@ -1,6 +1,6 @@
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(process.env.DATABASE_URL2!);
+const sql = neon(process.env.NEW_DATABASE_URL!);
 
 export async function POST(request: Request) {
   try {
