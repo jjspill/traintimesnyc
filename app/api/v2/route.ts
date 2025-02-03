@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     ]);
 
     // Ensure SQL array syntax is correct
-    const query = 'SELECT * FROM departures WHERE stop_id = ANY($1)';
+    const query = 'SELECT * FROM departures WHERE stopId = ANY($1)';
     const params = [directionStopIds];
 
     const data = await sql(query, params);
