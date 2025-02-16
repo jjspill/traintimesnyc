@@ -67,15 +67,33 @@ function getActivePeriods(activePeriods?: ActivePeriod[]) {
 }
 
 function getInformedEntities(entities?: InformedEntity[]) {
-  return (
-    entities?.map((entity) => ({
-      routeId: entity.route_id || null,
-      stopId: entity.stop_id || null,
-      sortOrder:
-        entity?.['transit_realtime.mercury_entity_selector']?.sort_order ||
-        null,
-    })) || []
-  );
+  const informedRoutes: any = [];
+  const informedStops: any = [];
+
+  entities?.forEach((entity) => {
+    const routeId = entity.route_id || null;
+    const stopId = entity.stop_id || null;
+
+    // Extract sort order level (everything after the last colon)
+    const fullSortOrder =
+      entity?.['transit_realtime.mercury_entity_selector']?.sort_order || null;
+    const sortOrder = fullSortOrder ? fullSortOrder.split(':').pop() : null;
+
+    if (routeId) {
+      informedRoutes.push({
+        routeId,
+        sortOrder,
+      });
+    }
+
+    if (stopId) {
+      informedStops.push({
+        stopId,
+      });
+    }
+  });
+
+  return { routes: informedRoutes, stops: informedStops };
 }
 
 function getMercuryAlert(mercury?: MercuryAlert) {
@@ -121,19 +139,18 @@ function isAlertActive(
 }
 
 export function cleanAlertEntities(entities: AlertEntity[], header: any) {
-  const updatedAt = new Date(header.timestamp * 1000).toLocaleString('en-US', {
+  const lastFetched = new Date().toLocaleString('en-US', {
     timeZone: 'America/New_York',
   });
-  const cleanedAlerts: any[] = [
+
+  const lastUpdated = new Date(header.timestamp * 1000).toLocaleString(
+    'en-US',
     {
-      lastFetched: new Date().toLocaleString('en-US', {
-        timeZone: 'America/New_York',
-      }),
-    },
-    {
-      lastUpdated: updatedAt,
-    },
-  ];
+      timeZone: 'America/New_York',
+    }
+  );
+
+  const alerts = [];
 
   for (const entity of entities) {
     const alert = entity.alert;
@@ -144,7 +161,7 @@ export function cleanAlertEntities(entities: AlertEntity[], header: any) {
       continue; // Skip inactive alerts
     }
 
-    cleanedAlerts.push({
+    alerts.push({
       id: entity.id,
       informedEntities: getInformedEntities(alert?.informed_entity),
       headerText: getTranslation(alert?.header_text?.translation),
@@ -153,5 +170,30 @@ export function cleanAlertEntities(entities: AlertEntity[], header: any) {
     });
   }
 
-  return cleanedAlerts;
+  // Return flat object with keys
+  return {
+    lastFetched,
+    lastUpdated,
+    alerts,
+  };
+}
+
+export function organizeAlertsByRoute(cleanedAlerts: any) {
+  const alertsByRoute: Record<string, any[]> = {};
+
+  cleanedAlerts.alerts.forEach((alert: any) => {
+    alert.informedEntities.routes.forEach((route: any) => {
+      const routeId = route.routeId;
+      if (!alertsByRoute[routeId]) {
+        alertsByRoute[routeId] = [];
+      }
+      alertsByRoute[routeId].push(alert);
+    });
+  });
+
+  return {
+    lastFetched: cleanedAlerts.lastFetched,
+    lastUpdated: cleanedAlerts.lastUpdated,
+    alerts: alertsByRoute,
+  };
 }

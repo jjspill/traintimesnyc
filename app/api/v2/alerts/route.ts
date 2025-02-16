@@ -1,4 +1,4 @@
-import { cleanAlertEntities } from './helpers';
+import { cleanAlertEntities, organizeAlertsByRoute } from './helpers';
 
 const ALERT_JSON_FEED =
   'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/camsys%2Fsubway-alerts.json';
@@ -13,7 +13,9 @@ export async function GET(request: Request) {
   });
 
   const data = await response.json();
-  const cleanedAlerts = cleanAlertEntities(data.entity, data.header);
+  const cleanedAlerts = organizeAlertsByRoute(
+    cleanAlertEntities(data.entity, data.header)
+  );
 
   return new Response(JSON.stringify(cleanedAlerts, null, 2), {
     status: 200,
