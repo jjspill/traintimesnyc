@@ -139,16 +139,9 @@ function isAlertActive(
 }
 
 export function cleanAlertEntities(entities: AlertEntity[], header: any) {
-  const lastFetched = new Date().toLocaleString('en-US', {
-    timeZone: 'America/New_York',
-  });
+  const lastFetched = new Date().toISOString();
 
-  const lastUpdated = new Date(header.timestamp * 1000).toLocaleString(
-    'en-US',
-    {
-      timeZone: 'America/New_York',
-    }
-  );
+  const lastUpdated = new Date(header.timestamp * 1000).toISOString();
 
   const alerts = [];
 
