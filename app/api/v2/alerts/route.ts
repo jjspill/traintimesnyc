@@ -4,7 +4,6 @@ const ALERT_JSON_FEED =
   'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/camsys%2Fsubway-alerts.json';
 
 export const revalidate = 60; // Cache at Next.js level for 60 seconds
-export const dynamic = 'auto'; // Let Next.js decide (static or dynamic)
 
 export async function GET(request: Request) {
   const response = await fetch(ALERT_JSON_FEED, {
