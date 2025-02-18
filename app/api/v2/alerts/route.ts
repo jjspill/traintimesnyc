@@ -8,7 +8,7 @@ export const revalidate = 60; // Cache at Next.js level for 60 seconds
 export async function GET(request: Request) {
   const response = await fetch(ALERT_JSON_FEED, {
     next: { revalidate: 60 }, // Revalidate every 60 seconds
-    cache: 'force-cache', // Cache on Vercel’s edge
+    // cache: 'force-cache', // Cache on Vercel’s edge
   });
 
   const data = await response.json();
